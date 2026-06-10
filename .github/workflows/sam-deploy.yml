@@ -6,17 +6,20 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - working-directory: ./MyApp
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-      - uses: aws-actions/setup-sam@v3
-      - uses: aws-actions/configure-aws-credentials@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
+      - name: Setup SAM
+        uses: aws-actions/setup-sam@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
-      # sam build 
-      - run: sam build --use-container
+        # sam build 
+        run: sam build --use-container
 
-      # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name MyApp--s3-bucket myappbucketph --region eu-west-2
+        # sam deploy
+        run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name MyApp--s3-bucket myappbucketph --region eu-west-2
