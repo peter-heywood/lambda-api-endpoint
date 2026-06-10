@@ -8,7 +8,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     defaults:
       run:
-        working-directory: .
+        working-directory: ./MyApp
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
