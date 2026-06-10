@@ -4,23 +4,33 @@ on:
       - main
 jobs:
   build-deploy:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    defaults:
+      run:
+        working-directory: .
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Setup Python
         uses: actions/setup-python@v6
+
       - name: Setup SAM
         uses: aws-actions/setup-sam@v3
+
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
-        # sam build 
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{vars.AWS_REGION}}
+          role-session-name: LambdaSamDeploy
+          role-skip-session-tagging: true
+
       - name: Build Lambda
         run: sam build --use-container
+
       - name: Deploy Lambda
-        # sam deploy
         run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name MyApp--s3-bucket myappbucketph --region eu-west-2
