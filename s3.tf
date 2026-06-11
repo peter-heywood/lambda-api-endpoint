@@ -1,8 +1,8 @@
 resource "aws_s3_bucket" "myapp_bucket" {
     # Replace ph with your initials
-    bucket = "myappbucketph"
+    bucket = local.bucket
     tags = {
-        Name = "MyApp S3 Bucket"
+        Name = local.bucketname
     }
 }
 
