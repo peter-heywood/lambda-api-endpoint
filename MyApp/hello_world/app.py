@@ -1,6 +1,7 @@
 import json
 
 Records = [{"id": 0, "name":"Peter"},{"id": 1, "name":"John"},{"id": 2, "name":"Chris"}]
+superSecret = "b3jCHHM28xJRAF3AxOLj4N7AJT9sQM73nPCdC68BVFH"
 
 def lambda_handler(event, context):
     if event['queryStringParameters']:
